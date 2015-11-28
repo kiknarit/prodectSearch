@@ -1,0 +1,52 @@
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title></title>
+    </head>
+    <body>
+        <form method = "post" action = "<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
+            Product Search - Input your keyword (s) <input id = "key" name="key" type = "text">
+            <input type="submit" name="submit" value="Submit"> 
+        </form>
+        <div id = "div1">Search Result is:</div>
+        <?php
+        $convert = "";
+        $strline = array();
+        $key = "";
+        $num = 0;
+        if ($_SERVER["REQUEST_METHOD"] == "POST") {
+            $key = explode(" ", ($_POST["key"]));
+            $srt = file_get_contents("product.txt");
+            $convert = explode("\n", $srt);
+            $arr_length = count($convert);
+            for ($i = 0; $i < $arr_length; $i++) {
+                $strline = explode(" ", $convert[$i]);
+                $arr_length_strline = count($strline);
+                $f = 0;
+                for ($j = 0; $j < $arr_length_strline; $j++) {
+                    $arr_length_key = count($key);
+                    for ($k = 0; $k < $arr_length_key; $k++) {
+                        if ($key[$k] == $strline[$j]) {
+                            //echo $strline[$j]." ".$key[$k];
+                            if ($f == 0) {
+                                echo "- " . $convert[$i];
+                                echo "<br>";
+                                $num += 1;
+                                $f += 1;
+                            } else {
+                                $f += 1;
+                            }
+                        }
+                    }       
+                }
+//                $numkey = $f;
+//                    if ($numkey != 0) {
+//                        echo $numkey;
+//                        echo "<br>";
+//                    }               
+            }
+            echo $num . " product(s) matched";
+        }
+        ?>  
+    </body>
+</html>
